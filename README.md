@@ -35,4 +35,17 @@ video.thumbnails({
 
 For each thumbnail time period, you can specify any other style changes you'd like to change when the user enters that region of the progress bar. Check out example.html to see how that technique can be used to create multiple thumbnails out of a single, sprited image.
 
+You may also define sprites configuration so that its corresponding styles would be calculated automatically. The following configuration defines a sprite image containing 8 sprited images 192x80, each to be displayed at ````options['0'].sprites.position[i]``` second:
+```js
+video.thumbnails({
+  0: {
+    src: 'http://example.com/thumbnail-sprites.png',
+    sprites: {
+      width: 192,
+      height: 80,
+      position: [0,87,130,172,217,240,303,346]
+    }
+  }
+});
+```
 The `width` property on each time period lets us know what the visible portion of the thumbnail should be. This is so that thumbnails won't reach beyond the player and perhaps get cut off. It can be specified on each time period or on the `0` time period.
