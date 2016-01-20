@@ -64,6 +64,34 @@
         x: document.documentElement.scrollLeft,
         y: document.documentElement.scrollTop
       };
+    },
+    // unfold sprites configuration by automatically calculating correct window
+    // for each sprite image
+    unfoldSpritesConf = function(options) {
+      var last = {};
+      Object.keys(options).forEach(function(key) {
+        var s;
+        if (!(s = options[key].sprites))
+          return;
+        s.position.forEach(function(pos, i) {
+          var offset = s.width/2 + s.width*i;
+          var r = {left: s.width*i, right: s.width*(i+1),
+            top: 0, bottom: s.height};
+          options[pos] = options[pos]||{};
+          options[pos] = extend({}, last, options[pos], {
+            style: {
+              left: '-'+offset+'px',
+              clip: 'rect('+r.top+'px, '+r.right+'px, '+
+                r.bottom+'px, '+r.left+'px)',
+              width: s.width*s.position.length,
+              height: s.height
+            }
+          });
+          last = options[key];
+        });
+        delete options[key].sprites;
+      });
+      return options;
     };
 
   /**
@@ -71,6 +99,7 @@
    */
   videojs.plugin('thumbnails', function(options) {
     var div, settings, img, player, progressControl, duration, moveListener, moveCancel;
+    options = options && unfoldSpritesConf(options);
     settings = extend({}, defaults, options);
     player = this;
 
