@@ -1,14 +1,24 @@
 {
-  "name": "videojs-thumbnails",
-  "version": "0.1.1-2",
+  "name": "@hola.org/videojs-thumbnails",
+  "version": "0.1.1-3",
   "description": "progress bar thumbnails plugin for video.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hola/videojs-thumbnails.git"
   },
+  "scripts": {
+    "build": "grunt",
+    "login": "c=`npm c ls`; test \"${c#*@hola}\" != \"$c\" || npm login --scope @hola.org",
+    "release": "run-s build login release:*",
+    "release:tag": "git tag v$npm_package_version",
+    "release:publish": "npm publish",
+    "release:pushtags": "git push --tags origin",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
     "grunt": "^0.4.4",
     "grunt-contrib-connect": "^0.9.0",
-    "grunt-contrib-jshint": "^0.10.0"
+    "grunt-contrib-jshint": "^1.0.0",
+    "npm-run-all": "^3.1.0"
   }
 }
