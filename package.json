@@ -2,6 +2,8 @@
   "name": "@hola.org/videojs-thumbnails",
   "version": "0.1.1-3",
   "description": "progress bar thumbnails plugin for video.js",
+  "main": "videojs.thumbnails.js",
+  "style": "videojs.thumbnails.css",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hola/videojs-thumbnails.git"
