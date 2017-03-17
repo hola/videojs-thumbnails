@@ -213,6 +213,7 @@
       }
 
       div.style.left = left + 'px';
+      div.style.display = 'block';
     };
 
     // update the thumbnail while hovering
@@ -220,7 +221,7 @@
     progressControl.on('touchmove', moveListener);
 
     moveCancel = function(event) {
-      div.style.left = '-1000px';
+      div.style.display = 'none';
     };
 
     // move the placeholder out of the way when not hovering
