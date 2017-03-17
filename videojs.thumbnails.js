@@ -73,23 +73,33 @@
         var s;
         if (!(s = options[key].sprites))
           return;
+        delete options[key].sprites;
+        if (!s.position && s.interval && s.count) {
+          s.position = [];
+          for (var i=0; i<s.count; i++)
+            s.position.push(+key+i*s.interval);
+        }
+        var rows = s.rows||1;
+        var cols = Math.ceil(s.position.length/rows);
         s.position.forEach(function(pos, i) {
-          var offset = s.width/2 + s.width*i;
-          var r = {left: s.width*i, right: s.width*(i+1),
-            top: 0, bottom: s.height};
+          var x = i%cols, y = Math.floor(i/cols);
+          var left = s.width/2 + s.width*x;
+          var top = s.height*(y+1)+15;
+          var r = {left: s.width*x, right: s.width*(x+1),
+            top: s.height*y, bottom: s.height*(y+1)};
           options[pos] = options[pos]||{};
           options[pos] = extend({}, last, options[pos], {
             style: {
-              left: '-'+offset+'px',
+              left: '-'+left+'px',
+              top: '-'+top+'px',
               clip: 'rect('+r.top+'px, '+r.right+'px, '+
                 r.bottom+'px, '+r.left+'px)',
-              width: s.width*s.position.length,
-              height: s.height
+              width: s.width*cols,
+              height: s.height*rows,
             }
           });
           last = options[key];
         });
-        delete options[key].sprites;
       });
       return options;
     };
