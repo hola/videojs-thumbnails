@@ -1,12 +1,13 @@
 /* a wrapper element that tracks the mouse vertically */
 .vjs-thumbnail-holder {
   position: absolute;
-  left: -1000px;
+  display: none;
+  overflow: hidden;
 }
 
 /* the thumbnail image itself */
 .vjs-thumbnail {
-  position: absolute;
+  position: relative;
   left: 0;
   bottom: 1.3em;
   opacity: 0;

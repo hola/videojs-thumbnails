@@ -37,22 +37,6 @@
       }
       return el;
     },
-    getVisibleWidth = function(el, width) {
-      var clip;
-
-      if (width) {
-        return parseFloat(width);
-      }
-
-      clip = getComputedStyle(el)('clip');
-      if (clip !== 'auto' && clip !== 'inherit') {
-        clip = clip.split(/(?:\(|\))/)[1].split(/(?:,| )/);
-        if (clip.length === 4) {
-          return (parseFloat(clip[1]) - parseFloat(clip[3]));
-        }
-      }
-      return 0;
-    },
     getScrollOffset = function() {
       if (window.pageXOffset) {
         return {
@@ -83,19 +67,15 @@
         var cols = Math.ceil(s.position.length/rows);
         s.position.forEach(function(pos, i) {
           var x = i%cols, y = Math.floor(i/cols);
-          var left = s.width/2 + s.width*x;
-          var top = s.height*(y+1)+15;
-          var r = {left: s.width*x, right: s.width*(x+1),
-            top: s.height*y, bottom: s.height*(y+1)};
           options[pos] = options[pos]||{};
           options[pos] = extend({}, last, options[pos], {
+            width: s.width,
+            height: s.height,
             style: {
-              left: '-'+left+'px',
-              top: '-'+top+'px',
-              clip: 'rect('+r.top+'px, '+r.right+'px, '+
-                r.bottom+'px, '+r.left+'px)',
-              width: s.width*cols,
-              height: s.height*rows,
+              left: '-'+s.width*x+'px',
+              top: '-'+s.height*y+'px',
+              width: s.width*cols+'px',
+              height: s.height*rows+'px',
             }
           });
           last = options[key];
@@ -151,7 +131,7 @@
 
     // keep track of the duration to calculate correct thumbnail to display
     duration = player.duration();
-    
+
     // when the container is MP4
     player.on('durationchange', function(event) {
       duration = player.duration();
@@ -198,21 +178,34 @@
       if (setting.src && img.src != setting.src) {
         img.src = setting.src;
       }
-      if (setting.style && img.style != setting.style) {
-        extend(img.style, setting.style);
+      var scale = player.hasClass('vjs-fullscreen') ? 1.5 : 1;
+      if (setting.style) {
+        img.style.left = parseFloat(setting.style.left)*scale+'px';
+        img.style.top = parseFloat(setting.style.top)*scale+'px';
+        img.style.width = parseFloat(setting.style.width)*scale+'px';
+        img.style.height = parseFloat(setting.style.height)*scale+'px';
+      } else {
+        img.style.width = 100*scale+'%';
+        img.style.height = 100*scale+'%';
       }
 
-      width = getVisibleWidth(img, setting.width || settings[0].width);
+      width = parseFloat(setting.width || settings[0].width)*scale;
+      height = parseFloat(setting.height || settings[0].height)*scale;
       halfWidth = width / 2;
 
       // make sure that the thumbnail doesn't fall off the right side of the left side of the player
-      if ( (left + halfWidth) > right ) {
-        left -= (left + halfWidth) - right;
+      if ((left + halfWidth) > right) {
+        left = right - width;
       } else if (left < halfWidth) {
-        left = halfWidth;
+        left = 0;
+      } else {
+        left -= halfWidth;
       }
 
+      div.style.width = width + 'px';
+      div.style.height = height + 'px';
       div.style.left = left + 'px';
+      div.style.top = '-' + height + 'px';
       div.style.display = 'block';
     };
 
