@@ -146,7 +146,7 @@
     progressControl = player.controlBar.progressControl;
     var el = progressControl.el();
     if (el.firstChild)
-      el.insertBefore(div, el.firstChild)
+      el.insertBefore(div, el.firstChild);
     else
       el.appendChild(div);
 
