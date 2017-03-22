@@ -144,7 +144,11 @@
 
     // add the thumbnail to the player
     progressControl = player.controlBar.progressControl;
-    progressControl.el().appendChild(div);
+    var el = progressControl.el();
+    if (el.firstChild)
+      el.insertBefore(div, el.firstChild)
+    else
+      el.appendChild(div);
 
     moveListener = function(event) {
       var mouseTime, time, active, left, setting, pageX, right, width, halfWidth, pageXOffset, clientRect;
