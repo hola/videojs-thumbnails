@@ -153,6 +153,9 @@
       el.appendChild(div);
 
     var moveListener = function(event) {
+      if (event.target === div || event.target === img) {
+        return;
+      }
       var pageXOffset = getScrollOffset().x;
       var clientRect = offsetParent(progressControl.el()).getBoundingClientRect();
       var right = (clientRect.width || clientRect.right) + pageXOffset;
