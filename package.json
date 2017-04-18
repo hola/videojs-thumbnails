@@ -1,6 +1,6 @@
 {
   "name": "@hola.org/videojs-thumbnails",
-  "version": "0.1.1-7",
+  "version": "0.1.1-8",
   "description": "progress bar thumbnails plugin for video.js",
   "main": "videojs.thumbnails.js",
   "style": "videojs.thumbnails.css",
