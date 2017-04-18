@@ -197,7 +197,9 @@
         if (!setting) {
           return;
         }
-        if (setting.src && img.src != setting.src) {
+        var re = /^https?:\/\//i;
+        if (setting.src && img.src.replace(re, '//') !=
+            setting.src.replace(re, '//')) {
           img.src = setting.src;
         }
         var scale = player.hasClass('vjs-fullscreen') ? 1.5 : 1;
