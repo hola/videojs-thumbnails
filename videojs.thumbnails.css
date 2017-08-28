@@ -3,6 +3,8 @@
   position: absolute;
   display: none;
   overflow: hidden;
+  outline: 2px solid #2a2a2b;
+  margin-top: -11px;
 }
 
 /* the thumbnail image itself */

@@ -155,7 +155,7 @@
       // add the thumbnail to the player
       var progressControl = player.controlBar.progressControl;
       var seekBar = progressControl.seekBar;
-      var el = progressControl.el();
+      var el = seekBar.el();
       if (el.firstChild)
         el.insertBefore(div, el.firstChild);
       else
@@ -166,19 +166,18 @@
           return;
         }
         var pageXOffset = getScrollOffset().x;
-        var clientRect = offsetParent(progressControl.el()).getBoundingClientRect();
+        var clientRect = offsetParent(seekBar.el()).getBoundingClientRect();
         var right = (clientRect.width || clientRect.right) + pageXOffset;
 
         var pageX = event.pageX;
         if (event.changedTouches) {
           pageX = event.changedTouches[0].pageX;
         }
-
         // find the page offset of the mouse
         var left = pageX || (event.clientX + document.body.scrollLeft +
           document.documentElement.scrollLeft);
         // subtract the page offset of the positioned offset parent
-        left -= offsetParent(progressControl.el()).getBoundingClientRect().left +
+        left -= offsetParent(seekBar.el()).getBoundingClientRect().left +
           pageXOffset;
 
         // apply updated styles to the thumbnail if necessary
