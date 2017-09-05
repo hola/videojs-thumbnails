@@ -155,7 +155,7 @@
       // add the thumbnail to the player
       var progressControl = player.controlBar.progressControl;
       var seekBar = progressControl.seekBar;
-      var el = seekBar.el();
+      var el = progressControl.el();
       if (el.firstChild)
         el.insertBefore(div, el.firstChild);
       else
@@ -166,8 +166,8 @@
           return;
         }
         var pageXOffset = getScrollOffset().x;
-        var clientRect = offsetParent(seekBar.el()).getBoundingClientRect();
-        var right = (clientRect.width || clientRect.right) + pageXOffset;
+        var minLeft = seekBar.el().offsetLeft;
+        var maxRight = minLeft+seekBar.el().offsetWidth;
 
         var pageX = event.pageX;
         if (event.changedTouches) {
@@ -177,7 +177,7 @@
         var left = pageX || (event.clientX + document.body.scrollLeft +
           document.documentElement.scrollLeft);
         // subtract the page offset of the positioned offset parent
-        left -= offsetParent(seekBar.el()).getBoundingClientRect().left +
+        left -= offsetParent(progressControl.el()).getBoundingClientRect().left +
           pageXOffset;
 
         // apply updated styles to the thumbnail if necessary
@@ -217,10 +217,10 @@
 
         // make sure that the thumbnail doesn't fall off the right side of the
         // left side of the player
-        if ((left + halfWidth) > right) {
-          left = right - width;
-        } else if (left < halfWidth) {
-          left = 0;
+        if (left + halfWidth > maxRight) {
+          left = maxRight - width;
+        } else if (left-halfWidth < minLeft) {
+          left = minLeft;
         } else {
           left -= halfWidth;
         }
